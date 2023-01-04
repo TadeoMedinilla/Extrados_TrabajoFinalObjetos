@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Hotel.DTOs
+{
+    internal class ReservaDTO
+    {
+        public int Res_ID { get; }
+        public int Res_CliID { get; set; }
+        public int Res_CuartoID { get; set; }
+        public DateOnly Res_CheckIn { get; set; }
+        public DateOnly Res_CheckOut { get; set; }
+        public int Res_Estado { get; set; }
+    }
+}
