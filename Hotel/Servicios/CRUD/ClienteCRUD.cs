@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿
+using Dapper;
 using Hotel.DTOs;
 using Hotel.Entidades;
 using System;
@@ -10,14 +11,13 @@ using System.Threading.Tasks;
 
 namespace Hotel.Servicios.CRUDs
 {
-    internal class ClienteCRUD : IGenericCRUD<Cliente>
+    internal class ClienteCRUD : SQL_Methods<Cliente>, IGenericCRUD<Cliente>
     {
-        private Configuracion configuracion { get; set; }
+
         private Cliente cli { get; set; }
         private List<Cliente> cliList { get; set; }
-        private ClienteDTO cliDTO { get; set; }
-        private List<ClienteDTO> cliDTOList { get; set; }
 
+        //Querys:
         private string InsertQuery = "";
 
         private string SelectQuery = "";
@@ -25,24 +25,23 @@ namespace Hotel.Servicios.CRUDs
 
         private string UpdateQuery = "";
 
-        public ClienteCRUD(Configuracion config)
+        public ClienteCRUD()
         {
-            this.configuracion = config;
+
         }
 
         //CRUD:
 
         public async Task Insertar(Cliente aInsertar)
-            //Create
+        //Create
         {
             string sentencia = InsertQuery;
 
             await SQL_Executable(sentencia, aInsertar);
-
         }
 
         public async Task<List<Cliente>> Select()
-            //Read all
+        //Read all
         {
             string sentencia = SelectQuery;
             cliList = await SQL_Query(sentencia);
@@ -51,7 +50,7 @@ namespace Hotel.Servicios.CRUDs
         }
 
         public Cliente BuscarPorID(int ID)
-            //Read One
+        //Read One
         {
             Cliente aux_cli = new Cliente();
             aux_cli.Cli_ID = ID;
@@ -74,6 +73,7 @@ namespace Hotel.Servicios.CRUDs
         Hago uso de DTOs cuando necesito recibir algo del usuario o necesito mostrarle algo.]
          */
 
+        /*
         private async Task<List<Cliente>> SQL_Query(string query)
             //Para realizar busquedas de mas de un cliente 
         {
@@ -111,8 +111,8 @@ namespace Hotel.Servicios.CRUDs
                 await connection.ExecuteAsync(sentencia, aModificar);
             };
         }
+        */
 
-        
 
         //Metodos auxiliares:
     }
