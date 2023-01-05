@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.Servicios.CRUDs
 {
-    internal class EmpleadoCRUD
+    internal class EmpleadoCRUD : IGenericCRUD<Empleado>
     {
         private Configuracion configuracion { get; set; }
         private Empleado emp { get; set; }
@@ -33,21 +33,22 @@ namespace Hotel.Servicios.CRUDs
         }
 
         //CRUD:
-        public async Task Insertar(string query)
+        public async Task Insertar(Empleado aInsertar)
             //Create
         {
-            this.emp = SolicitarParametros();
+            string sentencia = InsertQuery;
 
-            string sentencia = query;
+            await SQL_Executable(sentencia, aInsertar);
 
-            await SQL_Executable(sentencia, this.emp);
         }
 
-        public async Task<List<EmpleadoDTO>> SelectEmpleado()
+        public async Task<List<Empleado>> Select()
             //Read all
         {
-            empList = await SQL_Query(SelectQuery);
+            string sentencia = SelectQuery;
+            empList = await SQL_Query(sentencia);
 
+            /* [ Esto lo realizo en la capa de servicios ]
             if (empList.Count != 0)
             {
                 foreach (Empleado emp in empList)
@@ -56,43 +57,40 @@ namespace Hotel.Servicios.CRUDs
                     empDTOList.Add(empDTO);
                 }
             }
-            return empDTOList;
+            return empDTOList; */
+            return empList;
         }
 
-        public EmpleadoDTO BuscarPorID()
+        public Empleado BuscarPorID(int ID)
             //Read one
         {
-            Empleado aux_emp = SolicitarID();
-            emp = SQL_QueryFirstOrDefault(SelectFirstOrDefault, aux_emp);
-            
-            empDTO = configuracion.mapper.Map<Empleado, EmpleadoDTO>(emp);
+            Empleado aux_emp = new Empleado();
+            aux_emp.Emp_ID = ID;
 
-            return empDTO;
+            string sentencia = SelectFirstOrDefault;
+
+            emp = SQL_QueryFirstOrDefault(sentencia, aux_emp);
+            
+            //empDTO = configuracion.mapper.Map<Empleado, EmpleadoDTO>(emp); [ Esta parte la hago en la capa de servicio ] 
+
+            return emp;
         }
 
-        public async Task Update()
+        public async Task Update(int ID)
             //No se va a utilizar
         {
-            //Solicitar el ID 
-
-            //Console.Write("Ingrese el ID del empleado que desea buscar:\t");
-            //int ID = Convert.ToInt16(Console.ReadLine());
-            //Empleado aux_emp = new Empleado();
-            //aux_emp.Emp_ID = ID;
-
-            //Traer el primer empleado con ese ID y guardar ese empleado en un objeto 
-            Empleado aux_emp = SolicitarID();
-            emp = SQL_QueryFirstOrDefault(SelectFirstOrDefault, aux_emp);
-
-            //Pasarlo por parametro del SQL_Executable
+            emp = BuscarPorID(ID);
             await SQL_Executable(UpdateQuery, emp);
-
         }
 
 
 
         //Metodos de ejecucion sobre la BD:
-        private Empleado SQL_QueryFirstOrDefault(string query, Empleado emp)
+        /*
+        [Todos los metodos privados trabajan y devuelven entidades originales.
+        Hago uso de DTOs cuando necesito recibir algo del usuario o necesito mostrarle algo.]
+         */
+        protected Empleado SQL_QueryFirstOrDefault(string query, Empleado Buscar)
             //Para buscar el primer resultado.
         {
             string sentencia = query;
@@ -100,12 +98,12 @@ namespace Hotel.Servicios.CRUDs
             
             using (var connection = new SqlConnection(configuracion.DB_Connection)) 
             {
-                aux_emp = connection.QueryFirstOrDefault<Empleado>(sentencia, emp);
+                aux_emp = connection.QueryFirstOrDefault<Empleado>(sentencia, Buscar);
             };
             return aux_emp;
         }
         
-        private async Task<List<Empleado>> SQL_Query(string query)
+        protected async Task<List<Empleado>> SQL_Query(string query)
             //Para hacer select de mas de un objeto de la BD
         {
             string sentencia = query;
@@ -119,12 +117,12 @@ namespace Hotel.Servicios.CRUDs
             return aux_empList;
         }
             
-        private async Task SQL_Executable(string query, Empleado aux_emp)
+        protected async Task SQL_Executable(string query, Empleado aModificar)
         {
             string ejecutar = query;
             using (var connection = new SqlConnection(configuracion.DB_Connection))
             {
-                await connection.ExecuteAsync(ejecutar, aux_emp);
+                await connection.ExecuteAsync(ejecutar, aModificar);
             }
         }
 
