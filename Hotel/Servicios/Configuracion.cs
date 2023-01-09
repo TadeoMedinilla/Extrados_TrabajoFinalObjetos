@@ -15,26 +15,12 @@ namespace Hotel.Servicios
     {
         public string DB_Connection { get; private set; }
 
-        public IMapper mapper { get; set; }
-
-
         public Configuracion() 
         {
             this.DB_Connection = "DataBase = .; Initial Catalog = Hotel; Integrated Security = True; TrustServerCertificate=True;";
-            this.mapper = SetMapperConfiguration();
         }
 
-        private IMapper SetMapperConfiguration()
-        {
-            var configuration = new MapperConfiguration(configuration =>
-            {
-                //Aqui creo los mapeos que necesite.
-                configuration.CreateMap<Empleado, EmpleadoDTO>();
-                configuration.CreateMap<EmpleadoDTO, Empleado>();
-
-            });
-            return configuration.CreateMapper();
-        }
+        
     }
 }
 

@@ -8,7 +8,7 @@ namespace Hotel.Entidades
 {
     internal class Usuario
     {
-        public int User_ID { get; set; }
+        public int User_ID { get; set; } 
         public string User_Mail { get; set; }
         public string User_Password { get; set; }
     }
