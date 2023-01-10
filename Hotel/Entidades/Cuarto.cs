@@ -19,5 +19,6 @@ namespace Hotel.Entidades
         public int Cuarto_Servicio { get; set; }
         public int Cuarto_Hidromasaje { get; set; }
 
+        
     }
 }

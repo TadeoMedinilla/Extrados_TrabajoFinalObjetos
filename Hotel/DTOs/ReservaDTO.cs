@@ -13,6 +13,63 @@ namespace Hotel.DTOs
         public int Res_CuartoID { get; set; }
         public DateOnly Res_CheckIn { get; set; }
         public DateOnly Res_CheckOut { get; set; }
+        
         public int Res_Estado { get; set; }
+        public string Estado 
+        { 
+            get 
+            {
+                switch (this.Res_Estado)
+                {
+                    case 0:
+                        this.Estado = "Activa.";
+                        break;
+                    case 1:
+                        this.Estado = "Cancelada.";
+                        break;
+                }
+                return this.Estado;
+            }
+            set { } 
+        }
+
+
+        public void SolicitarDatos()
+        {
+            Console.Write("Ingrese el ID del cliente:\t");
+            Res_CliID = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Ingrese el numero de la habitacion a reservar:\t");
+            Res_CuartoID = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Ingrese la fecha en el siguiente formato [ 'YYYY-MM-DD' ]:");
+            string fecha_In = Console.ReadLine();
+            Res_CheckIn = SetFecha(fecha_In);
+
+            Console.Write("Ingrese la fecha de Check In en el siguiente formato [ 'YYYY-MM-DD' ]:\t");
+            string fecha_Out = Console.ReadLine();
+            Res_CheckOut = SetFecha(fecha_Out);
+
+        }
+
+        public void ImprimirDatos()
+        {
+            Console.WriteLine($"Datos de la reserva:{this.Res_ID}\n" +
+                              $"Numero de cuarto: {this.Res_CuartoID}\t\t Estado: {this.Estado}\n" +
+                              $"Check In: {this.Res_CheckIn}\t\t Check Out: {this.Res_CheckOut}\n");
+        }
+
+        private DateOnly SetFecha(string fecha) //Formato [ YYYY-MM-DD ]
+            //Devuelve un objeto DateOnly
+        {
+            int year = Convert.ToInt32(fecha.Substring(0, 4));
+            int month = Convert.ToInt16(fecha.Substring(5, 2));
+            int day = Convert.ToInt16(fecha.Substring(8, 2));
+
+            DateOnly aux_date = new DateOnly(year, month, day);
+
+            return aux_date;
+        }
+
     }
 }

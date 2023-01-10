@@ -21,6 +21,14 @@ namespace Hotel.Servicios
                 configuration.CreateMap<Empleado, EmpleadoDTO>();
                 configuration.CreateMap<EmpleadoDTO, Empleado>();
 
+                configuration.CreateMap<CuartoDTO, Cuarto>();
+                configuration.CreateMap<Cuarto,CuartoDTO>();
+
+                configuration.CreateMap<ClienteDTO, Cliente>();
+                configuration.CreateMap<Cliente, ClienteDTO>();
+
+                configuration.CreateMap<ReservaDTO, Reserva>();
+                configuration.CreateMap<Reserva, ReservaDTO>();
             });
             return configuration.CreateMapper();
         }
