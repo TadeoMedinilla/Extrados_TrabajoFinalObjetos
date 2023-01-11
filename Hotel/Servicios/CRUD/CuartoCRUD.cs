@@ -20,7 +20,9 @@ namespace Hotel.Servicios.CRUDs
         private string SelectFirstOrDefault = "";
 
         private string UpdateQuery = "";
-
+        private string EnLimpiezaQuery = "";
+        private string DisponibleQuery = "";
+        private string EnRenovacionQuery = "";
 
         public CuartoCRUD() { }
 
@@ -58,5 +60,22 @@ namespace Hotel.Servicios.CRUDs
             cuarto = BuscarPorID(ID);
             await SQL_Executable(UpdateQuery, cuarto);
         }
-    }
+
+        public async Task UpdateTo_EnLimpieza(int ID)
+        {
+            cuarto = BuscarPorID(ID);
+            await SQL_Executable(EnLimpiezaQuery, cuarto);
+        }
+
+        public async Task UpdateTo_Disponible(int ID)
+        {
+            cuarto = BuscarPorID(ID);
+            await SQL_Executable(DisponibleQuery, cuarto);
+        }
+
+        public async Task UpdateTo_EnRenovacion(int ID)
+        {
+            cuarto = BuscarPorID(ID);
+            await SQL_Executable(EnRenovacionQuery, cuarto);
+        }
 }

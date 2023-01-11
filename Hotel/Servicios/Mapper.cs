@@ -18,17 +18,21 @@ namespace Hotel.Servicios
             var configuration = new MapperConfiguration(configuration =>
             {
                 //Aqui creo los mapeos que necesite.
-                configuration.CreateMap<Empleado, EmpleadoDTO>();
-                configuration.CreateMap<EmpleadoDTO, Empleado>();
-
-                configuration.CreateMap<CuartoDTO, Cuarto>();
-                configuration.CreateMap<Cuarto,CuartoDTO>();
 
                 configuration.CreateMap<ClienteDTO, Cliente>();
                 configuration.CreateMap<Cliente, ClienteDTO>();
+                
+                configuration.CreateMap<CuartoDTO, Cuarto>();
+                configuration.CreateMap<Cuarto,CuartoDTO>();
+                
+                configuration.CreateMap<Empleado, EmpleadoDTO>();
+                configuration.CreateMap<EmpleadoDTO, Empleado>();
 
                 configuration.CreateMap<ReservaDTO, Reserva>();
                 configuration.CreateMap<Reserva, ReservaDTO>();
+
+                configuration.CreateMap<UsuarioDTO, Usuario>();
+                configuration.CreateMap<Usuario, UsuarioDTO>();
             });
             return configuration.CreateMapper();
         }

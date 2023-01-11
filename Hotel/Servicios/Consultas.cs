@@ -4,6 +4,7 @@ using Hotel.Servicios.CRUDs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,13 @@ namespace Hotel.Servicios
         private ReservaDTO ReservaDTO { get; set; }
         private ReservaCRUD ReservaCRUD { get; set; }
 
+        private Empleado Empleado { get; set; }
+        private EmpleadoDTO EmpleadoDTO { get; set; }
+        private EmpleadoCRUD EmpleadoCRUD { get; set; }
+
+        private Usuario User { get; set; }
+        private UsuarioDTO UserDTO { get; set; }
+        private UsuarioCRUD UserCRUD { get; set; }
 
 
         /*Metodos para AAP:
@@ -58,6 +66,18 @@ namespace Hotel.Servicios
             Console.WriteLine($"El cuarto {CuartoDTO.CuartoDTO_ID} está: {CuartoDTO.Estado}");
         }
 
+        public async Task AAP_CuartoEnLimpieza(int CuartoID)
+            //Cambia el estado del cuarto a 'En limpieza'
+        {
+            await CuartoCRUD.UpdateTo_EnLimpieza(CuartoID);
+        }
+        
+        public async Task AAP_CuartoDisponible(int CuartoID)
+            //Cambia el estado del cuarto a 'Disponible'
+        {
+            await CuartoCRUD.UpdateTo_Disponible(CuartoID);
+        }
+        
         public async Task AAP_NuevoCliente()
             //Inserta un nuevo cliente. 
         {
@@ -88,6 +108,12 @@ namespace Hotel.Servicios
             await ReservaCRUD.Insertar(Reserva);
         }
 
+        public async Task AAP_CancelarReserva(int ReservaID)
+            //Cancela la reserva seleccionada. 
+        {
+            await ReservaCRUD.Update(ReservaID);
+        }
+
 
         /*Metodos para el administrador: 
          
@@ -96,5 +122,53 @@ namespace Hotel.Servicios
         - Cargar nuevo empleado
         - Crear nuevo usuario         
          */
+
+        public async Task Admin_NuevoCuarto()
+            //Inserta un nuevo Cuarto. 
+        {
+            CuartoDTO.SolicitarDatos();
+            
+            Cuarto = mapper.mapper.Map<CuartoDTO, Cuarto>(CuartoDTO);
+
+            await CuartoCRUD.Insertar(Cuarto);
+        }
+
+        public async Task Admin_CuartoEnLimpieza(int CuartoID)
+            //Cambia el estado de un cuarto a 'En limpieza'. 
+        {
+            await this.AAP_CuartoEnLimpieza(CuartoID);
+        }
+        
+        public async Task Admin_CuartoDisponible(int CuartoID)
+            //Cambia el estado de un cuarto a 'Disponible'. 
+        {
+            await this.AAP_CuartoDisponible(CuartoID);
+        }
+
+        public async Task Admin_CuartoEnRenovacion(int CuartoID)
+            //Cambia el estado de un cuarto a 'En renovacion'. 
+        {
+            await CuartoCRUD.UpdateTo_EnRenovacion(CuartoID);
+        }
+
+        public async Task Admin_NuevoEmpleado()
+            //Ingresa un nuevo empleado. 
+        {
+            EmpleadoDTO.SolicitarDatos();
+
+            Empleado = mapper.mapper.Map<EmpleadoDTO,Empleado>(EmpleadoDTO);
+
+            await EmpleadoCRUD.Insertar(Empleado);
+        }
+
+        public async Task Admin_NuevoUser()
+            //Ingresa un nuevo usuario. 
+        {
+            UserDTO.SolicitarDatos();
+
+            User = mapper.mapper.Map<UsuarioDTO, Usuario>(UserDTO);
+
+            await UserCRUD.Insertar(User);
+        }
     }
 }
