@@ -18,12 +18,12 @@ namespace Hotel.Servicios.CRUDs
         private List<Cliente> cliList { get; set; }
 
         //Querys:
-        private string InsertQuery = "";
+        private string InsertQuery = "INSERT INTO Cliente (Cli_Nombre, Cli_Mail) VALUES (@Cli_Nombre, @Cli_Mail);";
 
-        private string SelectQuery = "";
-        private string SelectFirstOrDefault = "";
+        private string SelectQuery = "SELECT Cli_ID, Cli_Nombre, Cli_Mail FROM Cliente;";
+        private string SelectFirstOrDefault = "SELECT Cli_ID, Cli_Nombre, Cli_Mail FROM Cliente WHERE Cli_ID = @Cli_ID;";
 
-        private string UpdateQuery = "";
+        private string UpdateQuery = ""; //No se usa.
 
         public ClienteCRUD()
         {
@@ -33,7 +33,7 @@ namespace Hotel.Servicios.CRUDs
         //CRUD:
 
         public async Task Insertar(Cliente aInsertar)
-        //Create
+            //Create 
         {
             string sentencia = InsertQuery;
 
@@ -41,7 +41,7 @@ namespace Hotel.Servicios.CRUDs
         }
 
         public async Task<List<Cliente>> Select()
-        //Read all
+            //Read all 
         {
             string sentencia = SelectQuery;
             cliList = await SQL_Query(sentencia);
@@ -50,7 +50,7 @@ namespace Hotel.Servicios.CRUDs
         }
 
         public Cliente BuscarPorID(int ID)
-        //Read One
+            //Read One 
         {
             Cliente aux_cli = new Cliente();
             aux_cli.Cli_ID = ID;
@@ -62,7 +62,7 @@ namespace Hotel.Servicios.CRUDs
             return cli;
         }
 
-        public Task Update(int ID)
+        public Task Update(int ID, int Estado)
         {
             throw new NotImplementedException();
         }

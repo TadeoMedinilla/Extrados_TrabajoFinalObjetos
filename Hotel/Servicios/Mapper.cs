@@ -9,9 +9,14 @@ using System.Threading.Tasks;
 
 namespace Hotel.Servicios
 {
-    internal class Mapper
+    internal class Mapper 
     {
         public IMapper mapper { get; set; }
+
+        public Mapper() 
+        {
+            mapper = SetMapperConfiguration();
+        }
 
         private IMapper SetMapperConfiguration()
         {
@@ -33,6 +38,7 @@ namespace Hotel.Servicios
 
                 configuration.CreateMap<UsuarioDTO, Usuario>();
                 configuration.CreateMap<Usuario, UsuarioDTO>();
+
             });
             return configuration.CreateMapper();
         }

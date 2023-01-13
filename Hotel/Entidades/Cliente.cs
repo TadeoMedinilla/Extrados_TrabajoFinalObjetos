@@ -10,6 +10,6 @@ namespace Hotel.Entidades
     {
         public int Cli_ID { get; set; }
         public string Cli_Nombre { get; set; }
-        public string Cli_Mail { get; set; }
+        public string? Cli_Mail { get; set; }
     }
 }

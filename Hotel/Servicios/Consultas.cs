@@ -12,15 +12,17 @@ namespace Hotel.Servicios
 {
     internal class Consultas
     {
-        private Mapper mapper { get; }
+        private Mapper mapper { get; } = new Mapper();
 
-        private Cuarto Cuarto { get; set; }
-        private CuartoDTO CuartoDTO { get; set; }
-        private CuartoCRUD CuartoCRUD { get; set; }
+        private Cuarto Cuarto { get; set; } = new Cuarto();
+        private List<Cuarto> CuartoList { get; set; } 
+        private CuartoDTO CuartoDTO { get; set; } = new CuartoDTO();
+        private CuartoCRUD CuartoCRUD { get; set; } = new CuartoCRUD(); 
 
-        private Cliente Cliente { get; set; }
-        private ClienteDTO ClienteDTO { get; set; }
-        private ClienteCRUD ClienteCRUD { get; set; }
+        private Cliente Cliente { get; set; } = new Cliente();
+        private List<Cliente> ClienteList { get; set; }
+        private ClienteDTO ClienteDTO { get; set; } = new ClienteDTO();
+        private ClienteCRUD ClienteCRUD { get; set; } = new ClienteCRUD();
 
         private Reserva Reserva { get; set; }
         private ReservaDTO ReservaDTO { get; set; }
@@ -46,6 +48,11 @@ namespace Hotel.Servicios
          - Cambiar estado de cuarto a: En limpieza o Disponible.         
          */
 
+        
+        //CONSULTAS CUARTOS: 
+        // ¡¡SOLO FALTA PROBAR!!
+
+
         public void AAP_InfoCuarto(int CuartoID)
             //Muestra informacion de un Cuarto. 
         {
@@ -53,7 +60,7 @@ namespace Hotel.Servicios
 
             CuartoDTO = mapper.mapper.Map<Cuarto, CuartoDTO>(Cuarto);
 
-            CuartoDTO.ImprimirDatos();
+            CuartoDTO.ImprimirDetalle();
         }
 
         public void AAP_EstadoCuarto(int CuartoID)
@@ -63,21 +70,66 @@ namespace Hotel.Servicios
             
             CuartoDTO = mapper.mapper.Map<Cuarto,CuartoDTO>(Cuarto);
 
-            Console.WriteLine($"El cuarto {CuartoDTO.CuartoDTO_ID} está: {CuartoDTO.Estado}");
+            Console.WriteLine($"El cuarto {CuartoDTO.Cuarto_ID} está: {CuartoDTO.Estado}");
+        }
+
+        public async Task AAP_CambiarEstadoCuarto(int ID, int Estado)
+            //Cambia el estado del cuarto, los estados son:
+            //[ 0. Disponible; 1. En limpieza ]. 
+        {
+            await CuartoCRUD.UpdateEstado( ID, Estado);
         }
 
         public async Task AAP_CuartoEnLimpieza(int CuartoID)
-            //Cambia el estado del cuarto a 'En limpieza'
+            //Cambia el estado del cuarto a 'En limpieza'. 
         {
             await CuartoCRUD.UpdateTo_EnLimpieza(CuartoID);
         }
         
         public async Task AAP_CuartoDisponible(int CuartoID)
-            //Cambia el estado del cuarto a 'Disponible'
+            //Cambia el estado del cuarto a 'Disponible'. 
         {
             await CuartoCRUD.UpdateTo_Disponible(CuartoID);
         }
+
+        public async Task AAP_ListarCuartos()
+            //Imprime una lista de cuartos. 
+        {
+            CuartoList = await CuartoCRUD.Select();
+
+            ImprimirCuartos(CuartoList);
+
+            /*foreach (Cuarto cuarto in CuartoList)
+            {
+                CuartoDTO = mapper.mapper.Map<Cuarto, CuartoDTO>(cuarto);
+
+                CuartoDTO.ImprimirDatos();
+            }*/
+        }
+
+        public async Task AAP_ListarCuartosDisponibles()
+            //Imprime una lista de los cuartos disponibles. 
+        {
+            CuartoList = await CuartoCRUD.SelectDisponibles();
+
+            ImprimirCuartos(CuartoList);
+        }
+
+        private void ImprimirCuartos(List<Cuarto> cuartoList)
+            //Ayuda a imprimir una lista de cuartos. [Metodo auxiliar] 
+        {
+            foreach (Cuarto cuarto in cuartoList)
+            {
+                CuartoDTO = mapper.mapper.Map<Cuarto, CuartoDTO>(cuarto);
+
+                CuartoDTO.ImprimirDatos();
+            }
+        }
+
+
         
+
+        //CONSULTAS CLIENTES:
         public async Task AAP_NuevoCliente()
             //Inserta un nuevo cliente. 
         {
@@ -96,6 +148,19 @@ namespace Hotel.Servicios
             ClienteDTO = mapper.mapper.Map<Cliente, ClienteDTO>(Cliente);
 
             ClienteDTO.ImprimirDatos();
+        }
+
+        public async Task AAP_ListarClientes()
+            //Imprime una lista de clientes. 
+        {
+            ClienteList = await ClienteCRUD.Select();
+
+            foreach (Cliente cliente in ClienteList)
+            {
+                ClienteDTO = mapper.mapper.Map<Cliente,ClienteDTO>(cliente);
+
+                ClienteDTO.ImprimirDatos();
+            }
         }
 
         public async Task AAP_NuevaReserva()
@@ -131,6 +196,13 @@ namespace Hotel.Servicios
             Cuarto = mapper.mapper.Map<CuartoDTO, Cuarto>(CuartoDTO);
 
             await CuartoCRUD.Insertar(Cuarto);
+        }
+
+        public async Task Admin_CambiarEstadoCuarto(int ID, int Estado)
+            //Cambia el estado del cuarto, los estados son:
+            //[ 0. Disponible; 1. En limpieza; 2. En renovacion ]. 
+        {
+            await AAP_CambiarEstadoCuarto(ID, Estado);
         }
 
         public async Task Admin_CuartoEnLimpieza(int CuartoID)
