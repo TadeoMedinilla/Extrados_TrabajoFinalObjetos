@@ -9,17 +9,17 @@ namespace Hotel.Servicios.CRUDs
 {
     internal class ReservaCRUD : SQL_Methods<Reserva>, IGenericCRUD<Reserva>
     {
-        private Reserva res { get; set; }
-        private List<Reserva> resList { get; set; }
+        private Reserva res { get; set; } = new Reserva();
+        private List<Reserva> resList { get; set; } = new List<Reserva> ();
 
         //Querys:
 
-        private string InsertQuery = "";
+        private string InsertQuery = "INSERT INTO Hotel.dbo.Reservas (Res_CliID,Res_CuartoID, Res_CheckIn, Res_CheckOut, Res_Estado)\r\nVALUES (@Res_CliID, @Res_CuartoID, @Res_CheckIn, @Res_CheckOut, @Res_Estado);";
 
-        private string SelectQuery = "";
-        private string SelectFirstOrDefault = "";
+        private string SelectQuery = "SELECT  Res_ID, Cliente.Cli_Nombre AS Cliente,\r\n\t\tRes_CliID, Res_CuartoID,\r\n\t\tRes_CheckIn, Res_CheckOut,\r\n\t\tEstadoRes_Descripcion AS Estado\r\nFROM Hotel.dbo.Reservas \r\nJOIN Hotel.dbo.Cliente ON Reservas.Res_CliID = Cliente.Cli_ID\r\nJOIN Hotel.dbo.EstadoReserva ON Reservas.Res_Estado = EstadoRes_ID\r\nWHERE Reservas.Res_Estado = 0; ";
+        private string SelectFirstOrDefault = "SELECT  Res_ID, Cliente.Cli_Nombre AS Cliente,\r\n\t\tRes_CliID, Res_CuartoID,\r\n\t\tRes_CheckIn, Res_CheckOut,\r\n\t\tEstadoRes_Descripcion AS Estado\r\nFROM Hotel.dbo.Reservas \r\nJOIN Hotel.dbo.Cliente ON Reservas.Res_CliID = Cliente.Cli_ID\r\nJOIN Hotel.dbo.EstadoReserva ON Reservas.Res_Estado = EstadoRes_ID\r\nWHERE Reservas.Res_ID = @Res_ID ; ";
 
-        private string UpdateQuery = "";
+        private string UpdateQuery = "UPDATE Hotel.dbo.Reservas SET Res_Estado = @Res_Estado WHERE Res_ID = @Res_ID;";
 
         public ReservaCRUD()
         {
@@ -55,11 +55,14 @@ namespace Hotel.Servicios.CRUDs
             return res;
         }
 
-        public async Task Update(int ID)
+        public async Task Update(Reserva aModificar)
+            //Modifica el estado de una reserva. 
         {
-            res = BuscarPorID(ID);
+            string sentencia = UpdateQuery;
 
-            await SQL_Executable(UpdateQuery, res);
+            await SQL_Executable(sentencia, aModificar);
         }
+
+
     }
 }

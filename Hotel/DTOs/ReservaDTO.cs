@@ -8,32 +8,21 @@ namespace Hotel.DTOs
 {
     internal class ReservaDTO
     {
-        public int Res_ID { get; }
+        public int Res_ID { get; set; }
+        
         public int Res_CliID { get; set; }
+        public string Cliente { get; set; }
+        
         public int Res_CuartoID { get; set; }
+       
         public DateOnly Res_CheckIn { get; set; }
         public DateOnly Res_CheckOut { get; set; }
         
         public int Res_Estado { get; set; }
-        public string Estado 
-        { 
-            get 
-            {
-                switch (this.Res_Estado)
-                {
-                    case 0:
-                        this.Estado = "Activa.";
-                        break;
-                    case 1:
-                        this.Estado = "Cancelada.";
-                        break;
-                }
-                return this.Estado;
-            }
-            set { } 
-        }
-
-
+        public string Estado { get; set; }
+        
+       
+        
         public void SolicitarDatos()
         {
             Console.Write("Ingrese el ID del cliente:\t");
@@ -54,8 +43,8 @@ namespace Hotel.DTOs
 
         public void ImprimirDatos()
         {
-            Console.WriteLine($"Datos de la reserva:{this.Res_ID}\n" +
-                              $"Numero de cuarto: {this.Res_CuartoID}\t\t Estado: {this.Estado}\n" +
+            Console.WriteLine($"Datos de la reserva:{this.Res_ID}\t\t Estado: {this.Estado}\n" +
+                              $"Numero de cuarto: {this.Res_CuartoID}\t\t Cliente: {this.Cliente}\t\t Cliente ID: {this.Res_CliID}\n" +
                               $"Check In: {this.Res_CheckIn}\t\t Check Out: {this.Res_CheckOut}\n");
         }
 

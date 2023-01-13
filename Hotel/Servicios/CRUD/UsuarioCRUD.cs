@@ -23,17 +23,11 @@ namespace Hotel.Servicios.CRUDs
 
             await SQL_Executable(sentencia, aInsertar);
         }
-        public async Task Update(int ID)
-        //Corregir. Falta ver como agregar la contraseña
-        //Solo cambiara la contraseña
+        
+        public async Task Update(Usuario aModificar)
+            //Modifica la contraseña. 
         {
-            user = BuscarPorID(ID);
-            /* Podria hacerlo:
-              
-             * user.password = nueva contraseña (pasada como arg)
-             
-             */
-            await SQL_Executable(ChangePassword, user);
+            await SQL_Executable(ChangePassword, aModificar);
         }
 
 

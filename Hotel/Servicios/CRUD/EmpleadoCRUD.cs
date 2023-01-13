@@ -33,7 +33,7 @@ namespace Hotel.Servicios.CRUDs
 
         //CRUD:
         public async Task Insertar(Empleado aInsertar)
-        //Create
+            //Create
         {
             string sentencia = InsertQuery;
 
@@ -42,7 +42,7 @@ namespace Hotel.Servicios.CRUDs
         }
 
         public async Task<List<Empleado>> Select()
-        //Read all
+            //Read all
         {
             string sentencia = SelectQuery;
             empList = await SQL_Query(sentencia);
@@ -61,7 +61,7 @@ namespace Hotel.Servicios.CRUDs
         }
 
         public Empleado BuscarPorID(int ID)
-        //Read one
+            //Read one
         {
             Empleado aux_emp = new Empleado();
             aux_emp.Emp_ID = ID;
@@ -75,8 +75,8 @@ namespace Hotel.Servicios.CRUDs
             return emp;
         }
 
-        public async Task Update(int ID)
-        //No se va a utilizar
+        public async Task Update(Empleado aModificar)
+            //No se va a utilizar. 
         {
             emp = BuscarPorID(ID);
             await SQL_Executable(UpdateQuery, emp);

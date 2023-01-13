@@ -16,6 +16,6 @@ namespace Hotel.Servicios.CRUDs
 
         public T BuscarPorID(int ID);
 
-        public Task Update(int ID);
+        public Task Update(T aModificar);
     }
 }

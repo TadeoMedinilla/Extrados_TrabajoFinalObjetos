@@ -76,39 +76,12 @@ namespace Hotel.Servicios.CRUDs
             return cuarto;
         }
 
-        public async Task Update(int ID)
+        public async Task Update(Cuarto aModificar)
             //No se utiliza. 
         {
-            cuarto = BuscarPorID(ID);
-            await SQL_Executable(UpdateQuery, cuarto);
-        }
+            string sentencia = UpdateQuery;
 
-        public async Task UpdateEstado(int ID, int Estado)
-        {
-            cuarto.Cuarto_ID = ID;
-            cuarto.Cuarto_Estado = Estado;
-            await SQL_Executable(UpdateQuery, cuarto);
-        }
-
-        public async Task UpdateTo_EnLimpieza(int ID)
-            //Actualiza el estado de un cuarto a 'En limpieza'. 
-        {
-            cuarto = BuscarPorID(ID);
-            await SQL_Executable(EnLimpiezaQuery, cuarto);
-        }
-
-        public async Task UpdateTo_Disponible(int ID)
-            //Actualiza el estado de un cuarto a 'Disponible'. 
-        {
-            cuarto = BuscarPorID(ID);
-            await SQL_Executable(DisponibleQuery, cuarto);
-        }
-
-        public async Task UpdateTo_EnRenovacion(int ID)
-            //Actualiza el estado de un cuarto a 'En renovacion'. 
-        {
-            cuarto = BuscarPorID(ID);
-            await SQL_Executable(EnRenovacionQuery, cuarto);
+            await SQL_Executable(sentencia, aModificar);
         }
     }
 }

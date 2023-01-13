@@ -24,17 +24,18 @@ namespace Hotel.Servicios
         private ClienteDTO ClienteDTO { get; set; } = new ClienteDTO();
         private ClienteCRUD ClienteCRUD { get; set; } = new ClienteCRUD();
 
-        private Reserva Reserva { get; set; }
-        private ReservaDTO ReservaDTO { get; set; }
-        private ReservaCRUD ReservaCRUD { get; set; }
+        private Reserva Reserva { get; set; } = new Reserva();
+        private List<Reserva> ReservaList { get; set; } 
+        private ReservaDTO ReservaDTO { get; set; } = new ReservaDTO();
+        private ReservaCRUD ReservaCRUD { get; set; } = new ReservaCRUD();
 
-        private Empleado Empleado { get; set; }
-        private EmpleadoDTO EmpleadoDTO { get; set; }
-        private EmpleadoCRUD EmpleadoCRUD { get; set; }
+        private Empleado Empleado { get; set; } = new Empleado();
+        private EmpleadoDTO EmpleadoDTO { get; set; } = new EmpleadoDTO();
+        private EmpleadoCRUD EmpleadoCRUD { get; set; } = new EmpleadoCRUD();
 
-        private Usuario User { get; set; }
-        private UsuarioDTO UserDTO { get; set; }
-        private UsuarioCRUD UserCRUD { get; set; }
+        private Usuario User { get; set; } = new Usuario();
+        private UsuarioDTO UserDTO { get; set; } = new UsuarioDTO();
+        private UsuarioCRUD UserCRUD { get; set; } = new UsuarioCRUD();
 
 
         /*Metodos para AAP:
@@ -51,7 +52,6 @@ namespace Hotel.Servicios
         
         //CONSULTAS CUARTOS: 
         // ¡¡SOLO FALTA PROBAR!!
-
 
         public void AAP_InfoCuarto(int CuartoID)
             //Muestra informacion de un Cuarto. 
@@ -77,19 +77,12 @@ namespace Hotel.Servicios
             //Cambia el estado del cuarto, los estados son:
             //[ 0. Disponible; 1. En limpieza ]. 
         {
-            await CuartoCRUD.UpdateEstado( ID, Estado);
-        }
+            CuartoDTO.Cuarto_ID = ID;
+            CuartoDTO.Cuarto_Estado = Estado;
 
-        public async Task AAP_CuartoEnLimpieza(int CuartoID)
-            //Cambia el estado del cuarto a 'En limpieza'. 
-        {
-            await CuartoCRUD.UpdateTo_EnLimpieza(CuartoID);
-        }
-        
-        public async Task AAP_CuartoDisponible(int CuartoID)
-            //Cambia el estado del cuarto a 'Disponible'. 
-        {
-            await CuartoCRUD.UpdateTo_Disponible(CuartoID);
+            Cuarto = mapper.mapper.Map<CuartoDTO, Cuarto>(CuartoDTO);
+
+            await CuartoCRUD.Update(Cuarto);
         }
 
         public async Task AAP_ListarCuartos()
@@ -163,6 +156,10 @@ namespace Hotel.Servicios
             }
         }
 
+
+        //CONSULTAS RESERVAS:
+        // ¡Solo falta probar!
+
         public async Task AAP_NuevaReserva()
             //Inserta una nueva reserva. 
         {
@@ -173,12 +170,41 @@ namespace Hotel.Servicios
             await ReservaCRUD.Insertar(Reserva);
         }
 
-        public async Task AAP_CancelarReserva(int ReservaID)
-            //Cancela la reserva seleccionada. 
+        public void AAP_InfoReserva(int ReservaID)
+            //Muesta info detallada de una reserva. 
         {
-            await ReservaCRUD.Update(ReservaID);
+            Reserva = ReservaCRUD.BuscarPorID(ReservaID);
+
+            ReservaDTO = mapper.mapper.Map<Reserva, ReservaDTO>(Reserva);
+
+            ReservaDTO.ImprimirDatos();
         }
 
+        public async void AAP_ImprimirReservasActivas()
+            //Imprime las reservas activas. 
+        {
+            ReservaList = await ReservaCRUD.Select();
+
+            foreach (Reserva reserva in ReservaList)
+            {
+                ReservaDTO = mapper.mapper.Map<Reserva, ReservaDTO>(reserva);
+                
+                ReservaDTO.ImprimirDatos();
+            }
+        }
+
+        public async Task AAP_CambiarEstadoReserva(int ReservaID, int Estado)
+            //Cancela la reserva seleccionada. 
+        {
+            ReservaDTO.Res_ID = ReservaID;
+            ReservaDTO.Res_Estado = Estado;
+
+            Reserva = mapper.mapper.Map<ReservaDTO, Reserva>(ReservaDTO);
+            
+            await ReservaCRUD.Update(Reserva);
+        }
+
+        
 
         /*Metodos para el administrador: 
          
@@ -203,24 +229,6 @@ namespace Hotel.Servicios
             //[ 0. Disponible; 1. En limpieza; 2. En renovacion ]. 
         {
             await AAP_CambiarEstadoCuarto(ID, Estado);
-        }
-
-        public async Task Admin_CuartoEnLimpieza(int CuartoID)
-            //Cambia el estado de un cuarto a 'En limpieza'. 
-        {
-            await this.AAP_CuartoEnLimpieza(CuartoID);
-        }
-        
-        public async Task Admin_CuartoDisponible(int CuartoID)
-            //Cambia el estado de un cuarto a 'Disponible'. 
-        {
-            await this.AAP_CuartoDisponible(CuartoID);
-        }
-
-        public async Task Admin_CuartoEnRenovacion(int CuartoID)
-            //Cambia el estado de un cuarto a 'En renovacion'. 
-        {
-            await CuartoCRUD.UpdateTo_EnRenovacion(CuartoID);
         }
 
         public async Task Admin_NuevoEmpleado()

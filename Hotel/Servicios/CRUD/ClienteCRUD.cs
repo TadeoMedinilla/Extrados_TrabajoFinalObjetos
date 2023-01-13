@@ -62,7 +62,7 @@ namespace Hotel.Servicios.CRUDs
             return cli;
         }
 
-        public Task Update(int ID, int Estado)
+        public Task Update(Cliente aModificar)
         {
             throw new NotImplementedException();
         }
