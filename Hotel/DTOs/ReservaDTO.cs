@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.DTOs
 {
-    internal class ReservaDTO
+    internal class ReservaDTO : IDataTransferObject
     {
         public int Res_ID { get; set; }
         
@@ -41,15 +41,19 @@ namespace Hotel.DTOs
 
         }
 
-        public void ImprimirDatos()
+        public void ImprimirDetalle()
         {
             Console.WriteLine($"Datos de la reserva:{this.Res_ID}\t\t Estado: {this.Estado}\n" +
                               $"Numero de cuarto: {this.Res_CuartoID}\t\t Cliente: {this.Cliente}\t\t Cliente ID: {this.Res_CliID}\n" +
                               $"Check In: {this.Res_CheckIn}\t\t Check Out: {this.Res_CheckOut}\n");
         }
 
-        private DateOnly SetFecha(string fecha) //Formato [ YYYY-MM-DD ]
-            //Devuelve un objeto DateOnly
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fecha"> Formato [ YYYY-MM-DD ] </param>
+        /// <returns> Objeto DateOnly. </returns>
+        private DateOnly SetFecha(string fecha) 
         {
             int year = Convert.ToInt32(fecha.Substring(0, 4));
             int month = Convert.ToInt16(fecha.Substring(5, 2));
@@ -60,5 +64,10 @@ namespace Hotel.DTOs
             return aux_date;
         }
 
+        public void ImprimirDatos()
+        {
+            Console.WriteLine($"Reserva nro:{this.Res_ID}\t\t Estado: {this.Estado}\t\t Numero de cuarto: {this.Res_CuartoID}" +
+                              $"Check In: {this.Res_CheckIn}\t\t Check Out: {this.Res_CheckOut}\n");
+        }
     }
 }

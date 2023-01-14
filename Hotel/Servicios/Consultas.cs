@@ -15,21 +15,25 @@ namespace Hotel.Servicios
         private Mapper mapper { get; } = new Mapper();
 
         private Cuarto Cuarto { get; set; } = new Cuarto();
-        private List<Cuarto> CuartoList { get; set; } 
+        private List<Cuarto> CuartoList { get; set; } = new List<Cuarto>();
         private CuartoDTO CuartoDTO { get; set; } = new CuartoDTO();
+        private List<CuartoDTO> CuartoDTOList { get; set; } = new List<CuartoDTO>();
         private CuartoCRUD CuartoCRUD { get; set; } = new CuartoCRUD(); 
 
         private Cliente Cliente { get; set; } = new Cliente();
-        private List<Cliente> ClienteList { get; set; }
+        private List<Cliente> ClienteList { get; set; } = new List<Cliente>();
         private ClienteDTO ClienteDTO { get; set; } = new ClienteDTO();
+        private List<ClienteDTO> ClienteDTOList { get; set; } = new List<ClienteDTO>();
         private ClienteCRUD ClienteCRUD { get; set; } = new ClienteCRUD();
 
         private Reserva Reserva { get; set; } = new Reserva();
-        private List<Reserva> ReservaList { get; set; } 
+        private List<Reserva> ReservaList { get; set; } = new List<Reserva>(); 
         private ReservaDTO ReservaDTO { get; set; } = new ReservaDTO();
+        private List<ReservaDTO> ReservaDTOList { get; set; } = new List<ReservaDTO>();
         private ReservaCRUD ReservaCRUD { get; set; } = new ReservaCRUD();
 
         private Empleado Empleado { get; set; } = new Empleado();
+        private List<Empleado> EmpleadoList { get; set; } = new List<Empleado>(); 
         private EmpleadoDTO EmpleadoDTO { get; set; } = new EmpleadoDTO();
         private EmpleadoCRUD EmpleadoCRUD { get; set; } = new EmpleadoCRUD();
 
@@ -53,24 +57,26 @@ namespace Hotel.Servicios
         //CONSULTAS CUARTOS: 
         // ¡¡SOLO FALTA PROBAR!!
 
-        public void AAP_InfoCuarto(int CuartoID)
+        public CuartoDTO AAP_InfoCuarto(int CuartoID)
             //Muestra informacion de un Cuarto. 
         {
             Cuarto = CuartoCRUD.BuscarPorID(CuartoID);
 
             CuartoDTO = mapper.mapper.Map<Cuarto, CuartoDTO>(Cuarto);
 
-            CuartoDTO.ImprimirDetalle();
+            return CuartoDTO;
+            //CuartoDTO.ImprimirDetalle();
         }
 
-        public void AAP_EstadoCuarto(int CuartoID)
+        public CuartoDTO AAP_EstadoCuarto(int CuartoID)
             //Muestra el estado de un cuarto. 
         {
             Cuarto = CuartoCRUD.BuscarPorID(CuartoID);
             
             CuartoDTO = mapper.mapper.Map<Cuarto,CuartoDTO>(Cuarto);
 
-            Console.WriteLine($"El cuarto {CuartoDTO.Cuarto_ID} está: {CuartoDTO.Estado}");
+            return CuartoDTO;
+            //Console.WriteLine($"El cuarto {CuartoDTO.Cuarto_ID} está: {CuartoDTO.Estado}");
         }
 
         public async Task AAP_CambiarEstadoCuarto(int ID, int Estado)
@@ -85,103 +91,106 @@ namespace Hotel.Servicios
             await CuartoCRUD.Update(Cuarto);
         }
 
-        public async Task AAP_ListarCuartos()
-            //Imprime una lista de cuartos. 
+        public async Task<List<CuartoDTO>> AAP_ListarCuartos()
+            //Devuelve una lista de cuartos. 
         {
             CuartoList = await CuartoCRUD.Select();
 
-            ImprimirCuartos(CuartoList);
+            CuartoDTOList = ConvertirListaCuartos(CuartoList);
 
-            /*foreach (Cuarto cuarto in CuartoList)
-            {
-                CuartoDTO = mapper.mapper.Map<Cuarto, CuartoDTO>(cuarto);
-
-                CuartoDTO.ImprimirDatos();
-            }*/
+            return CuartoDTOList;
         }
 
-        public async Task AAP_ListarCuartosDisponibles()
-            //Imprime una lista de los cuartos disponibles. 
+        public async Task<List<CuartoDTO>> AAP_ListarCuartosDisponibles()
+            //Devuelve una lista de los cuartos disponibles. 
         {
             CuartoList = await CuartoCRUD.SelectDisponibles();
 
-            ImprimirCuartos(CuartoList);
+            CuartoDTOList = ConvertirListaCuartos(CuartoList);
+
+            return CuartoDTOList;
         }
 
-        private void ImprimirCuartos(List<Cuarto> cuartoList)
-            //Ayuda a imprimir una lista de cuartos. [Metodo auxiliar] 
+        private List<CuartoDTO> ConvertirListaCuartos(List<Cuarto> cuartoList)
+            //Ayuda a convertir una lista de cuartos. [Metodo auxiliar]. 
         {
             foreach (Cuarto cuarto in cuartoList)
             {
                 CuartoDTO = mapper.mapper.Map<Cuarto, CuartoDTO>(cuarto);
 
-                CuartoDTO.ImprimirDatos();
+                CuartoDTOList.Add(CuartoDTO);
             }
+            return CuartoDTOList;
         }
 
 
         
 
         //CONSULTAS CLIENTES:
-        public async Task AAP_NuevoCliente()
+        public async Task AAP_NuevoCliente(ClienteDTO NuevoCliente)
             //Inserta un nuevo cliente. 
         {
-            ClienteDTO.SolicitarDatos();
-
-            Cliente = mapper.mapper.Map<ClienteDTO,Cliente>(ClienteDTO);
+            Cliente = mapper.mapper.Map<ClienteDTO,Cliente>(NuevoCliente);
 
             await ClienteCRUD.Insertar(Cliente);
         }
 
-        public void AAP_InfoCliente(int ClienteID)
+        public ClienteDTO AAP_InfoCliente(int ClienteID)
             //Muesta la info de un nuevo cliente. 
         {
             Cliente = ClienteCRUD.BuscarPorID(ClienteID);
 
             ClienteDTO = mapper.mapper.Map<Cliente, ClienteDTO>(Cliente);
 
-            ClienteDTO.ImprimirDatos();
+            return ClienteDTO;
         }
 
-        public async Task AAP_ListarClientes()
+        public async Task<List<ClienteDTO>> AAP_ListarClientes()
             //Imprime una lista de clientes. 
         {
             ClienteList = await ClienteCRUD.Select();
 
-            foreach (Cliente cliente in ClienteList)
-            {
-                ClienteDTO = mapper.mapper.Map<Cliente,ClienteDTO>(cliente);
+            ClienteDTOList = ConvertirListaClientes(ClienteList);
 
-                ClienteDTO.ImprimirDatos();
+            return ClienteDTOList;
+        }
+        
+        private List<ClienteDTO> ConvertirListaClientes(List<Cliente> Clientes)
+            //Ayuda a convertir una lista de clientes. [ Metodo auxiliar ]. 
+        {
+            foreach (Cliente cliente in Clientes)
+            {
+                ClienteDTO = mapper.mapper.Map<Cliente, ClienteDTO>(cliente);
+                ClienteDTOList.Add(ClienteDTO);
             }
+            
+            return ClienteDTOList;
         }
 
 
         //CONSULTAS RESERVAS:
         // ¡Solo falta probar!
 
-        public async Task AAP_NuevaReserva()
+        public async Task AAP_NuevaReserva(ReservaDTO NuevaReserva)
             //Inserta una nueva reserva. 
         {
-            ReservaDTO.SolicitarDatos();
-
-            Reserva = mapper.mapper.Map<ReservaDTO, Reserva>(ReservaDTO);
+            Reserva = mapper.mapper.Map<ReservaDTO, Reserva>(NuevaReserva);
 
             await ReservaCRUD.Insertar(Reserva);
         }
 
-        public void AAP_InfoReserva(int ReservaID)
+        public ReservaDTO AAP_InfoReserva(int ReservaID)
             //Muesta info detallada de una reserva. 
         {
             Reserva = ReservaCRUD.BuscarPorID(ReservaID);
 
             ReservaDTO = mapper.mapper.Map<Reserva, ReservaDTO>(Reserva);
 
-            ReservaDTO.ImprimirDatos();
+            return ReservaDTO;
         }
 
-        public async void AAP_ImprimirReservasActivas()
-            //Imprime las reservas activas. 
+        public async Task<List<ReservaDTO>> AAP_ListarReservasActivas()
+            //Devuelve una lista de las reservas activas. 
         {
             ReservaList = await ReservaCRUD.Select();
 
@@ -189,8 +198,10 @@ namespace Hotel.Servicios
             {
                 ReservaDTO = mapper.mapper.Map<Reserva, ReservaDTO>(reserva);
                 
-                ReservaDTO.ImprimirDatos();
+                ReservaDTOList.Add(ReservaDTO);
             }
+            
+            return ReservaDTOList;
         }
 
         public async Task AAP_CambiarEstadoReserva(int ReservaID, int Estado)
@@ -214,12 +225,10 @@ namespace Hotel.Servicios
         - Crear nuevo usuario         
          */
 
-        public async Task Admin_NuevoCuarto()
+        public async Task Admin_NuevoCuarto(CuartoDTO NuevoCuarto)
             //Inserta un nuevo Cuarto. 
         {
-            CuartoDTO.SolicitarDatos();
-            
-            Cuarto = mapper.mapper.Map<CuartoDTO, Cuarto>(CuartoDTO);
+            Cuarto = mapper.mapper.Map<CuartoDTO, Cuarto>(NuevoCuarto);
 
             await CuartoCRUD.Insertar(Cuarto);
         }
@@ -231,24 +240,41 @@ namespace Hotel.Servicios
             await AAP_CambiarEstadoCuarto(ID, Estado);
         }
 
-        public async Task Admin_NuevoEmpleado()
+        public async Task Admin_NuevoEmpleado(EmpleadoDTO NuevoEmpleado)
             //Ingresa un nuevo empleado. 
         {
-            EmpleadoDTO.SolicitarDatos();
-
-            Empleado = mapper.mapper.Map<EmpleadoDTO,Empleado>(EmpleadoDTO);
+            Empleado = mapper.mapper.Map<EmpleadoDTO,Empleado>(NuevoEmpleado);
 
             await EmpleadoCRUD.Insertar(Empleado);
         }
 
-        public async Task Admin_NuevoUser()
+        public async Task Admin_NuevoUser(UsuarioDTO NuevoUser)
             //Ingresa un nuevo usuario. 
         {
-            UserDTO.SolicitarDatos();
-
-            User = mapper.mapper.Map<UsuarioDTO, Usuario>(UserDTO);
+            User = mapper.mapper.Map<UsuarioDTO, Usuario>(NuevoUser);
 
             await UserCRUD.Insertar(User);
+        }
+    
+        public void Admin_CambiarContraseña()
+        {
+
+        }
+
+        public EmpleadoDTO LogIn(string mail, string password)
+        {
+            User.User_Mail = mail;
+            User.User_Password = password;
+
+            User = UserCRUD.SelectUsuario(User);
+
+            Empleado.Emp_ID = User.User_ID;
+
+            Empleado = EmpleadoCRUD.SelectEmpleado(Empleado);
+
+            EmpleadoDTO = mapper.mapper.Map<Empleado, EmpleadoDTO>(Empleado);
+
+            return EmpleadoDTO;
         }
     }
 }

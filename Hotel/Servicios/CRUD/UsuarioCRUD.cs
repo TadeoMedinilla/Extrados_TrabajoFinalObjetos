@@ -1,4 +1,5 @@
-﻿using Hotel.Entidades;
+﻿using Hotel.DTOs;
+using Hotel.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,17 @@ namespace Hotel.Servicios.CRUDs
     internal class UsuarioCRUD : SQL_Methods<Usuario>, IGenericCRUD<Usuario>
     {
         private Usuario user { get; set; }
+        private Empleado Empleado { get; set; }
 
         //Querys
 
-        private string InsertQuery = "";
-        private string ChangePassword = "";
+        private string InsertQuery = "INSERT INTO Hotel.dbo.Usuarios \r\n\t\t\t( Usuario_ID, Usuario_Mail, Usuario_Password) \r\nVALUES ( @User_ID, @User_Mail, @User_Password)";
+        
+        private string ChangePassword = "UPDATE Hotel.dbo.Usuarios SET Usuario_Password = @User_Password WHERE Usuario_ID = @User_ID;";
+
         private string SelectFirstOrDefault = "";
+
+        private string LogInSelect = "";
 
         public async Task Insertar(Usuario aInsertar)
         {
@@ -29,8 +35,6 @@ namespace Hotel.Servicios.CRUDs
         {
             await SQL_Executable(ChangePassword, aModificar);
         }
-
-
 
         public Usuario BuscarPorID(int ID)
         {
@@ -48,6 +52,15 @@ namespace Hotel.Servicios.CRUDs
         public Task<List<Usuario>> Select()
         {
             throw new NotImplementedException();
+        }
+
+        public Usuario SelectUsuario(Usuario Personal)
+        {
+            string sentencia = LogInSelect;
+
+            user = SQL_Select(sentencia, Personal);
+
+            return user;
         }
 
     }

@@ -46,6 +46,23 @@ namespace Hotel.Servicios
                 await connection.ExecuteAsync(ejecutar, aModificar);
             }
         }
+        /// <summary>
+        /// Metodo para realizar Selects de manera mas flexible.
+        /// </summary>
+        /// <param name="query">Sentencia que se ejecutará.</param>
+        /// <param name="Entidad"></param>
+        /// <returns></returns>
+        protected T SQL_Select (string query, T Entidad)
+        {
+            string sentencia = query;
+            T aux;
+
+            using (var connection = new SqlConnection(configuracion.DB_Connection))
+            {
+                aux = connection.QueryFirstOrDefault<T>(sentencia, Entidad);
+            }
+            return aux;
+        }
 
     }
 }

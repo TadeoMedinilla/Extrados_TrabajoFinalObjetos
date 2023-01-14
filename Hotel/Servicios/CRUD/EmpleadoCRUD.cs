@@ -18,12 +18,15 @@ namespace Hotel.Servicios.CRUDs
 
         //Querys:
 
-        private string InsertQuery = "";
+        private string InsertQuery = "INSERT INTO Hotel.dbo.Empleados \r\n\t\t\t(Emp_Nombre, Emp_Edad, Emp_Puesto, Emp_Mail)\r\nVALUES (@Emp_Nombre, @Emp_Edad, @Emp_Puesto, @Emp_Mail);";
 
-        private string SelectQuery = "";
-        private string SelectFirstOrDefault = "";
+        private string SelectQuery = "SELECT Emp_ID,\r\n\t\tEmp_Nombre,\r\n\t\tEmp_Edad,\r\n\t\tPuesto_Descripcion AS Puesto,\r\n\t\tEmp_Mail\r\nFROM Hotel.dbo.Empleados \r\nJOIN Hotel.dbo.Puesto ON Empleados.Emp_Puesto = Puesto.Puesto_ID;";
+        private string SelectPuestoQuery = "SELECT Emp_ID,\r\n\t\tEmp_Nombre,\r\n\t\tEmp_Edad,\r\n\t\tPuesto_Descripcion AS Puesto,\r\n\t\tEmp_Mail\r\nFROM Hotel.dbo.Empleados \r\nJOIN Hotel.dbo.Puesto ON Empleados.Emp_Puesto = Puesto.Puesto_ID \r\nWHERE Emp_Puesto = @Emp_Puesto;";
+        private string SelectFirstOrDefault = "SELECT Emp_ID,\r\n\t\tEmp_Nombre,\r\n\t\tEmp_Edad,\r\n\t\tPuesto_Descripcion AS Puesto,\r\n\t\tEmp_Mail\r\nFROM Hotel.dbo.Empleados \r\nJOIN Hotel.dbo.Puesto ON Empleados.Emp_Puesto = Puesto.Puesto_ID \r\nWHERE Emp_ID = @Emp_ID;";
 
-        private string UpdateQuery = "";
+        private string LogInSelect = "";
+
+        private string UpdateQuery = "UPDATE Hotel.dbo.Empleados SET Emp_Puesto = @Emp_Puesto WHERE Emp_ID = @Emp_ID;";
 
 
         public EmpleadoCRUD()
@@ -33,7 +36,7 @@ namespace Hotel.Servicios.CRUDs
 
         //CRUD:
         public async Task Insertar(Empleado aInsertar)
-            //Create
+            //Create. 
         {
             string sentencia = InsertQuery;
 
@@ -42,7 +45,7 @@ namespace Hotel.Servicios.CRUDs
         }
 
         public async Task<List<Empleado>> Select()
-            //Read all
+            //Read all. 
         {
             string sentencia = SelectQuery;
             empList = await SQL_Query(sentencia);
@@ -61,7 +64,7 @@ namespace Hotel.Servicios.CRUDs
         }
 
         public Empleado BuscarPorID(int ID)
-            //Read one
+            //Read one. 
         {
             Empleado aux_emp = new Empleado();
             aux_emp.Emp_ID = ID;
@@ -76,11 +79,18 @@ namespace Hotel.Servicios.CRUDs
         }
 
         public async Task Update(Empleado aModificar)
-            //No se va a utilizar. 
+            //No se va a utilizar.  
         {
-            emp = BuscarPorID(ID);
-            await SQL_Executable(UpdateQuery, emp);
+            await SQL_Executable(UpdateQuery, aModificar);
         }
+        
+        public Empleado SelectEmpleado(Empleado Personal)
+        {
+            string sentencia = LogInSelect;
 
+            emp = SQL_Select(sentencia, Personal);
+
+            return emp;
+        }
     }
 }

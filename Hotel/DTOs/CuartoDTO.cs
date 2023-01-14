@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.DTOs
 {
-    internal class CuartoDTO
+    internal class CuartoDTO : IDataTransferObject
     {
         public int Cuarto_ID { get; set; }
         

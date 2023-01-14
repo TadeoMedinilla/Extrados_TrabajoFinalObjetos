@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Hotel.DTOs
 {
-    internal class EmpleadoDTO
+    internal class EmpleadoDTO : IDataTransferObject
     {
         public int? Emp_ID { get; set; }
         public string Emp_Nombre { get; set; }
         public int? Emp_Edad { get; set; }
         public int Emp_Puesto { get; set; }
+        public string Puesto { get; set; }
         public string? Emp_Mail { get; set; }
 
         public void SolicitarDatos()
@@ -29,13 +30,18 @@ namespace Hotel.DTOs
             this.Emp_Mail = Console.ReadLine();
         }
 
-        public void ImprimirDatos()
+        public void ImprimirDetalle()
         {
             Console.WriteLine($"ID Empleado: {this.Emp_ID}\n" +
                               $"Nombre: {this.Emp_Nombre}\n" +
                               $"Edad: {this.Emp_Edad}\n" +
-                              $"Puesto: {this.Emp_Mail}\n" +
+                              $"Puesto: {this.Puesto}\n" +
                               $"Mail: {this.Emp_Mail}\n");
+        }
+
+        public void ImprimirDatos()
+        {
+            Console.WriteLine($"ID Empleado: {this.Emp_ID}\t\tNombre: {this.Emp_Nombre}\t\tPuesto: {this.Puesto}");
         }
     }
 }

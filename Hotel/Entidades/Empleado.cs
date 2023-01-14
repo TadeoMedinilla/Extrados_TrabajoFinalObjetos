@@ -12,6 +12,7 @@ namespace Hotel.Entidades
         public string Emp_Nombre { get; set; }
         public int Emp_Edad { get; set; }
         public int Emp_Puesto { get; set; }
+        public string Puesto { get; set; }
         public string Emp_Mail { get; set; }
 
     }

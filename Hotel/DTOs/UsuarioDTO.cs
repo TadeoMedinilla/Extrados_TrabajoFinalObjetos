@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.DTOs
 {
-    internal class UsuarioDTO
+    internal class UsuarioDTO : IDataTransferObject
     {
         public int? User_ID { get; set; }
         public string User_Mail { get; set; }
@@ -24,6 +24,11 @@ namespace Hotel.DTOs
         public void ImprimirDatos()
         {
             Console.WriteLine($"Usuario:{this.User_Mail} ");
+        }
+
+        public void ImprimirDetalle()
+        {
+            throw new NotImplementedException();
         }
     }
 }

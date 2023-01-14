@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.DTOs
 {
-    internal class ClienteDTO
+    internal class ClienteDTO : IDataTransferObject
     {
         public int Cli_ID { get; set; }
         public string Cli_Nombre { get; set; }
@@ -29,6 +29,9 @@ namespace Hotel.DTOs
                               $"Mail: {this.Cli_Mail}\n");
         }
 
-        
+        public void ImprimirDetalle()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
