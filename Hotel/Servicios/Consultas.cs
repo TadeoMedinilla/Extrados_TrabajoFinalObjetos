@@ -205,7 +205,8 @@ namespace Hotel.Servicios
         }
 
         public async Task AAP_CambiarEstadoReserva(int ReservaID, int Estado)
-            //Cancela la reserva seleccionada. 
+        //Cancela la reserva seleccionada.
+        //[ 0. Activa; 1. Cancelada ].
         {
             ReservaDTO.Res_ID = ReservaID;
             ReservaDTO.Res_Estado = Estado;
@@ -261,18 +262,32 @@ namespace Hotel.Servicios
 
         }
 
-        public EmpleadoDTO LogIn(string mail, string password)
+
+        /// <summary>
+        /// Permite el inicio de sesion para el posterior uso de la aplicacion
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <param name="password"></param>
+        /// <returns>EmpleadoDTO</returns>
+        public EmpleadoDTO LogIn(string mail, string password) //Listo.
         {
             User.User_Mail = mail;
             User.User_Password = password;
 
             User = UserCRUD.SelectUsuario(User);
 
-            Empleado.Emp_ID = User.User_ID;
+            if (User != null)
+            {
+                Empleado.Emp_ID = User.User_ID;
 
-            Empleado = EmpleadoCRUD.SelectEmpleado(Empleado);
+                Empleado = EmpleadoCRUD.SelectEmpleado(Empleado);
 
-            EmpleadoDTO = mapper.mapper.Map<Empleado, EmpleadoDTO>(Empleado);
+                EmpleadoDTO = mapper.mapper.Map<Empleado, EmpleadoDTO>(Empleado);
+            }
+            else
+            {
+                EmpleadoDTO = null;
+            }
 
             return EmpleadoDTO;
         }

@@ -19,7 +19,7 @@ namespace Hotel.Servicios
 
             using (var connection = new SqlConnection(configuracion.DB_Connection))
             {
-                var ListaTask = await connection.QueryAsync<T>(query);
+                var ListaTask = await connection.QueryAsync<T>(sentencia);
                 aux_List = ListaTask.ToList();
             }
             return aux_List;

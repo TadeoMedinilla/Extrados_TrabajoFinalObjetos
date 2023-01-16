@@ -21,7 +21,7 @@ namespace Hotel.Servicios.CRUDs
 
         private string SelectFirstOrDefault = "";
 
-        private string LogInSelect = "";
+        private string LogInSelect = "SELECT Usuario_ID AS User_ID\r\nFROM Hotel.dbo.Usuarios \r\nWHERE Usuario_Mail = @User_Mail AND Usuario_Password = @User_Password;";
 
         public async Task Insertar(Usuario aInsertar)
         {

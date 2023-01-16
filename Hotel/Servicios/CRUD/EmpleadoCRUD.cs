@@ -24,7 +24,7 @@ namespace Hotel.Servicios.CRUDs
         private string SelectPuestoQuery = "SELECT Emp_ID,\r\n\t\tEmp_Nombre,\r\n\t\tEmp_Edad,\r\n\t\tPuesto_Descripcion AS Puesto,\r\n\t\tEmp_Mail\r\nFROM Hotel.dbo.Empleados \r\nJOIN Hotel.dbo.Puesto ON Empleados.Emp_Puesto = Puesto.Puesto_ID \r\nWHERE Emp_Puesto = @Emp_Puesto;";
         private string SelectFirstOrDefault = "SELECT Emp_ID,\r\n\t\tEmp_Nombre,\r\n\t\tEmp_Edad,\r\n\t\tPuesto_Descripcion AS Puesto,\r\n\t\tEmp_Mail\r\nFROM Hotel.dbo.Empleados \r\nJOIN Hotel.dbo.Puesto ON Empleados.Emp_Puesto = Puesto.Puesto_ID \r\nWHERE Emp_ID = @Emp_ID;";
 
-        private string LogInSelect = "";
+        private string LogInSelect = "SELECT Emp_ID, Emp_Nombre, Emp_Puesto, Emp_Mail\r\nFROM Hotel.dbo.Empleados\r\nWHERE Emp_ID = @Emp_ID;";
 
         private string UpdateQuery = "UPDATE Hotel.dbo.Empleados SET Emp_Puesto = @Emp_Puesto WHERE Emp_ID = @Emp_ID;";
 
