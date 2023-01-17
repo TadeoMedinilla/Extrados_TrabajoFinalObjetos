@@ -15,7 +15,7 @@ namespace Hotel.Servicios.CRUDs
 
         //Querys
 
-        private string InsertQuery = "INSERT INTO Hotel.dbo.Usuarios \r\n\t\t\t( Usuario_ID, Usuario_Mail, Usuario_Password) \r\nVALUES ( @User_ID, @User_Mail, @User_Password)";
+        private string InsertQuery = "SET IDENTITY_INSERT Hotel.dbo.Usuarios ON;\r\nINSERT INTO Hotel.dbo.Usuarios \r\n\t\t\t( Usuario_ID, Usuario_Mail, Usuario_Password) \r\nVALUES ( @User_ID, @User_Mail, @User_Password)";
         
         private string ChangePassword = "UPDATE Hotel.dbo.Usuarios SET Usuario_Password = @User_Password WHERE Usuario_ID = @User_ID;";
 

@@ -114,8 +114,8 @@ namespace Hotel
                           "D.\tInformacion de un cuarto.\n" +
                           "E.\tVolver.\n" +
                           "Seleccione una opcion:\t");
-                string Opcion = Console.ReadLine().ToUpper();
-                switch (Opcion)
+                string Opcion1 = Console.ReadLine().ToUpper();
+                switch (Opcion1)
                 {
                     case "A": //Listar Cuartos
 
@@ -225,9 +225,9 @@ namespace Hotel
             bool interruptor = true;
             while (interruptor)
             {
-                Console.Write("\tMENU DE CONSULTAS A CLIENTES\nA.\tIngresar nueva reserva.\n" +
-                          "B.\tInfo de una reserva.\n" +
-                          "C.\tCambiar estado de una reserva.\n" +
+                Console.Write("\tMENU DE CONSULTAS A CLIENTES\nA.\tIngresar nuevo cliente.\n" +
+                          "B.\tInfo de un cliente.\n" +
+                          "C.\tListar clientes.\n" +
                           "D.\tVolver\n" +
                           "Seleccione una opcion:\t");
                 string Opcion = Console.ReadLine().ToUpper();

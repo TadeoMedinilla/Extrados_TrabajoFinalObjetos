@@ -15,8 +15,8 @@ namespace Hotel.Entidades
         
         public int Res_CuartoID { get; set; }
        
-        public DateOnly Res_CheckIn { get; set; }
-        public DateOnly Res_CheckOut { get; set; }
+        public string Res_CheckIn { get; set; }
+        public string Res_CheckOut { get; set; }
        
         public int Res_Estado { get; set; }
         public string Estado { get; set; }

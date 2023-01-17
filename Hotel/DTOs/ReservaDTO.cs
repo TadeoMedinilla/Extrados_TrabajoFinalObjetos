@@ -8,6 +8,14 @@ namespace Hotel.DTOs
 {
     internal class ReservaDTO : IDataTransferObject
     {
+        /*
+          ¡ERROR!
+
+        LOS DTOs SOLO TRANSPORTAN DATOS, NO DEBEN SOLICITARLOS NI IMPRIMIRLOS
+        CREAR CLASES APARTE EN SERVICIOS PARA REALIZAR LA IMPRESION Y SOLICITUD DE DATOS.
+
+        */
+
         public int Res_ID { get; set; }
         
         public int Res_CliID { get; set; }
@@ -15,8 +23,8 @@ namespace Hotel.DTOs
         
         public int Res_CuartoID { get; set; }
        
-        public DateOnly Res_CheckIn { get; set; }
-        public DateOnly Res_CheckOut { get; set; }
+        public string Res_CheckIn { get; set; }
+        public string Res_CheckOut { get; set; }
         
         public int Res_Estado { get; set; }
         public string Estado { get; set; }
@@ -32,12 +40,14 @@ namespace Hotel.DTOs
             Res_CuartoID = Convert.ToInt32(Console.ReadLine());
 
             Console.Write("Ingrese la fecha en el siguiente formato [ 'YYYY-MM-DD' ]:");
-            string fecha_In = Console.ReadLine();
-            Res_CheckIn = SetFecha(fecha_In);
+            Res_CheckIn = Console.ReadLine();
+            //string fecha_In = Console.ReadLine();
+            //Res_CheckIn = SetFecha(fecha_In);
 
             Console.Write("Ingrese la fecha de Check In en el siguiente formato [ 'YYYY-MM-DD' ]:\t");
-            string fecha_Out = Console.ReadLine();
-            Res_CheckOut = SetFecha(fecha_Out);
+            Res_CheckOut = Console.ReadLine();
+            //string fecha_Out = Console.ReadLine();
+            //Res_CheckOut = SetFecha(fecha_Out);
 
         }
 

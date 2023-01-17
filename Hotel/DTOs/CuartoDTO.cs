@@ -9,6 +9,13 @@ namespace Hotel.DTOs
 {
     internal class CuartoDTO : IDataTransferObject
     {
+        /*
+          ¡ERROR!
+
+        LOS DTOs SOLO TRANSPORTAN DATOS, NO DEBEN SOLICITARLOS NI IMPRIMIRLOS
+        CREAR CLASES APARTE EN SERVICIOS PARA REALIZAR LA IMPRESION Y SOLICITUD DE DATOS.
+
+        */
         public int Cuarto_ID { get; set; }
         
         public int Cuarto_Categoria { get; set; }
